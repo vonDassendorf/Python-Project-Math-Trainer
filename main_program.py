@@ -23,7 +23,7 @@ import addition_file as add_py
 ##root.mainloop()
 
 LARGE_FONT = ("Verdana", 12)
-##Base code to show the desired page##
+##Base code for main window and to show the desired page##
 class MainWindow(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
@@ -41,9 +41,9 @@ class MainWindow(tk.Tk):
         ##Creating the Menu##
         menubar = tk.Menu(container)
         filemenu = tk.Menu(menubar, tearoff=0)
-        filemenu.add_command(label="Addition", command=add_py.addition)
+        filemenu.add_command(label="Addition", command=lambda: self.show_frame(add_py.AdditionPage))
         filemenu.add_command(label="Subtraction")
-        filemenu.add_command(label="Multiplication", command=mul_py.multiplication)
+        filemenu.add_command(label="Multiplication", command=lambda: self.show_frame(mul_py.MultiplicationPage))
         filemenu.add_command(label="Division")
         filemenu.add_separator()
         filemenu.add_command(labe="Exit", command=quit)
@@ -51,8 +51,8 @@ class MainWindow(tk.Tk):
 
         tk.Tk.config(self, menu=menubar)
         
-        
-        for F in (StartPage, ):
+        ##Popping up the correct page to the front##
+        for F in (StartPage, add_py.AdditionPage):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
