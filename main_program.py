@@ -1,4 +1,5 @@
-from tkinter import *
+import tkinter as tk
+from tkinter import ttk
 import multiplication as mul_py
 import addition_file as add_py
 
@@ -21,27 +22,58 @@ import addition_file as add_py
 ##btn_div.grid(row=3, column=1)
 ##root.mainloop()
 
+LARGE_FONT = ("Verdana", 12)
+##Base code to show the desired page##
+class MainWindow(tk.Tk):
+    def __init__(self, *args, **kwargs):
+        tk.Tk.__init__(self, *args, **kwargs)
 
-class MainWindow(Frame):
-    def __init__(self, master = None):
-        Frame.__init__(self, master)
-        self.master = master
-        self.init_main_window()
+        #tk.Tk.iconbitmap(self, default="nånting.ico")
+        tk.Tk.wm_title(self, "Math trainer")
+        
+        container = tk.Frame(self)
+        container.pack(side="top", fill="both", expand = True)
+        container.grid_rowconfigure(0, weight=1)
+        container.grid_columnconfigure(0, weight=1)
+        
+        self.frames = {}
 
-    def init_main_window(self):
-        self.master.title("Math Trainer")
-        main_menu = Menu(self.master)
-        self.master.config(menu=main_menu)
-        file = Menu(main_menu)
-        file.add_command(label="Addition", command=add_py.addition)
-        file.add_command(label="Subtraction")
-        file.add_command(label="Multiplication", command=mul_py.multiplication)
-        file.add_command(label="Division")
-        main_menu.add_cascade(label="File", menu=file)
+        ##Creating the Menu##
+        menubar = tk.Menu(container)
+        filemenu = tk.Menu(menubar, tearoff=0)
+        filemenu.add_command(label="Addition", command=add_py.addition)
+        filemenu.add_command(label="Subtraction")
+        filemenu.add_command(label="Multiplication", command=mul_py.multiplication)
+        filemenu.add_command(label="Division")
+        filemenu.add_separator()
+        filemenu.add_command(labe="Exit", command=quit)
+        menubar.add_cascade(label="File", menu=filemenu)
 
-root = Tk()
-app = MainWindow(root)
-root.mainloop()
+        tk.Tk.config(self, menu=menubar)
+        
+        
+        for F in (StartPage, ):
+            frame = F(container, self)
+            self.frames[F] = frame
+            frame.grid(row=0, column=0, sticky="nsew")
+            
+        self.show_frame(StartPage)
+
+    def show_frame(self, cont):
+        frame = self.frames[cont]
+        frame.tkraise()
+
+##Start page to show when program is started##
+class StartPage(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        label = ttk.Label(self, text="Choose what you want to do in the menubar", font=LARGE_FONT)
+        label.pack(pady=10, padx=10)
+
+
+app = MainWindow()
+app.geometry("800x600")
+app.mainloop()
 
 #ran1 = random.randint(0,10)
 
