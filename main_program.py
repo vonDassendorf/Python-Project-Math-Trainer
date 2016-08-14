@@ -41,38 +41,65 @@ class MainWindow(tk.Tk):
         ##Creating the Menu##
         menubar = tk.Menu(container)
         filemenu = tk.Menu(menubar, tearoff=0)
-        filemenu.add_command(label="Addition", command=lambda: self.show_frame(add_py.AdditionPage))
+        filemenu.add_command(label="Addition", command=add_py.Addition)
         filemenu.add_command(label="Subtraction")
-        filemenu.add_command(label="Multiplication", command=lambda: self.show_frame(mul_py.MultiplicationPage))
+        filemenu.add_command(label="Multiplication",
+                             command=lambda:self.show_frame(mul_py.MultiplicationPage))
         filemenu.add_command(label="Division")
         filemenu.add_separator()
         filemenu.add_command(labe="Exit", command=quit)
         menubar.add_cascade(label="File", menu=filemenu)
 
-        tk.Tk.config(self, menu=menubar)
+        tk.Tk.config(self, menu=menubar)        
         
-        ##Popping up the correct page to the front##
-        for F in (StartPage, add_py.AdditionPage):
-            frame = F(container, self)
-            self.frames[F] = frame
-            frame.grid(row=0, column=0, sticky="nsew")
+        frame = StartPage(container, self)
+        self.frames[StartPage] = frame
+        frame.grid(row=0, column=0, sticky="nsew")
             
         self.show_frame(StartPage)
+
+
 
     def show_frame(self, cont):
         frame = self.frames[cont]
         frame.tkraise()
 
-##Start page to show when program is started##
 class StartPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
-        label = ttk.Label(self, text="Choose what you want to do in the menubar", font=LARGE_FONT)
+        label = ttk.Label(self,
+                          text="Choose what you want to do in the menubar",
+                          font=LARGE_FONT)
         label.pack(pady=10, padx=10)
+        self.name_entry_box()
+        
+    def name_entry_box(self):
+        name_entry_label  = tk.Label(text="Enter your name: ")
+        self.name_entry = tk.Entry()
+        name_entry_label.pack()
+        self.name_entry.pack()
 
+
+class HighscoreList():
+    def __init__(self, exercise):
+        ##Creating and loading the Highscore list##
+        self.highscore_list = {'add': {},'sub': {},'div': {},'mul': {}}
+        self.highscore_list_file = open("highscore.txt", "w")
+        self.highscore_add(exercise)
+
+        ##Adding results to highscore##
+    def highscore_add(self, exercise):
+        if exercise == "+":
+            if len(self.highscore_list['add'].keys()) < 10 and result > min(self.highscore_list,
+                                            key=self.highscore_list.get):
+                self.highscore_list['add'][username] = points
+            elif result > min(self.highscore_list, key=self.highscore_list.get):
+                self.highscore_list.pop([min(self.highscore_list,
+                                            key=self.highscore_list.get)], None)
+                self.highscore_list['add'][username] = points
+        
 
 app = MainWindow()
-app.geometry("800x600")
 app.mainloop()
 
 #ran1 = random.randint(0,10)
