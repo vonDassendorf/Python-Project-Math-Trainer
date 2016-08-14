@@ -36,18 +36,41 @@ class Addition():
             entry_str = str(self.add_ent.get())
             entry_int = int(entry_str)
             exercise_result = self.ran_term1+self.ran_term2
-            self.send_highscore()
             if entry_int == exercise_result:
                 self.lbl2.configure(text="Correct!")
                 self.points += 1
             else:
+                
                 self.lbl2.configure(text="Incorrect, answer is " + str(exercise_result))
                 self.points = 0
             self.lbl3.configure(text="Points: "+str(self.points))
-            self.ran_term1 = random.randint(1,10)
-            self.ran_term2 = random.randint(1,10)
+            if self.points <= 10:
+                self.ran_term1 = random.randint(1,10)
+                self.ran_term2 = random.randint(1,10)
+            if self.points > 10:
+                self.ran_term1 = random.randint(1,50)
+                self.ran_term2 = random.randint(1,100)
+            elif self.points > 20:
+                self.ran_term1 = random.randint(1,100)
+                self.ran_term2 = random.randint(1,100)
+            elif self.points > 50:
+                self.ran_term1 = random.randint(1,500)
+                self.ran_term2 = random.randint(1,500)
+            elif self.points > 100:
+                self.ran_term1 = random.randint(1,1000)
+                self.ran_term2 = random.randint(1,1000)
             self.exercise_str = str(self.ran_term1)+"+"+str(self.ran_term2)
             self.lbl1.configure(text="Assignment: "+self.exercise_str)
             self.add_ent.delete(0, 'end')
         except ValueError:
-            print("Please enter a integer")
+            print("Please enter an integer")
+
+##    def add_to_highscore(self, exercise):
+##        self.highscore_list = open("highscore.txt", "w")
+##            if len(self.highscore_list['add'].keys()) < 10 and result > min(self.highscore_list,
+##                                            key=self.highscore_list.get):
+##                self.highscore_list['add'][username] = points
+##            elif result > min(self.highscore_list, key=self.highscore_list.get):
+##                self.highscore_list.pop([min(self.highscore_list,
+##                                            key=self.highscore_list.get)], None)
+##                self.highscore_list['add'][username] = points
