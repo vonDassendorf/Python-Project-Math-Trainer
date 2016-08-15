@@ -1,7 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
-import multiplication as mul_py
+import multiplication_file as mul_py
 import addition_file as add_py
+import subtraction_file as sub_py
+import division_file as div_py
 
 ##root = Tk()
 ##root.title("MathProject")
@@ -38,14 +40,22 @@ class MainWindow(tk.Tk):
         
         self.frames = {}
 
+        name_entry_label  = tk.Label(text="Enter your name: ")
+        self.name_entry = tk.Entry()
+        name_entry_label.pack()
+        self.name_entry.pack()
+
         ##Creating the Menu##
         menubar = tk.Menu(container)
         filemenu = tk.Menu(menubar, tearoff=0)
-        filemenu.add_command(label="Addition", command=add_py.Addition)
-        filemenu.add_command(label="Subtraction")
+        filemenu.add_command(label="Addition",
+                             command=lambda: self.call_exercise("add"))
+        filemenu.add_command(label="Subtraction",
+                             command=lambda: self.call_exercise("sub"))
         filemenu.add_command(label="Multiplication",
-                             command=lambda:self.show_frame(mul_py.MultiplicationPage))
-        filemenu.add_command(label="Division")
+                             command=lambda: self.call_exercise("mul"))
+        filemenu.add_command(label="Division",
+                             command=lambda: self.call_exercise("div"))
         filemenu.add_separator()
         filemenu.add_command(labe="Exit", command=quit)
         menubar.add_cascade(label="File", menu=filemenu)
@@ -56,13 +66,20 @@ class MainWindow(tk.Tk):
         self.frames[StartPage] = frame
         frame.grid(row=0, column=0, sticky="nsew")
             
-        self.show_frame(StartPage)
+
+        
+    def call_exercise(self, exercise):
+        self.username = str(self.name_entry.get())
+        if exercise == "add":
+            add_py.Addition(self.username)
+        elif exercise == "sub":
+            sub_py.Subtraction(self.username)
+        elif exercise == "mul":
+            mul_py.Multiplication(self.username)
+        elif exercise == "div":
+            div_py.Division(self.username)
 
 
-
-    def show_frame(self, cont):
-        frame = self.frames[cont]
-        frame.tkraise()
 
 class StartPage(tk.Frame):
     def __init__(self, parent, controller):
@@ -71,13 +88,6 @@ class StartPage(tk.Frame):
                           text="Choose what you want to do in the menubar",
                           font=LARGE_FONT)
         label.pack(pady=10, padx=10)
-        self.name_entry_box()
-        
-    def name_entry_box(self):
-        name_entry_label  = tk.Label(text="Enter your name: ")
-        self.name_entry = tk.Entry()
-        name_entry_label.pack()
-        self.name_entry.pack()
 
 
 class HighscoreList():
