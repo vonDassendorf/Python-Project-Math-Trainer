@@ -28,6 +28,10 @@ class Subtraction():
         self.sub_btn.grid(row=1, column=1)
         self.lbl2.grid(row=2, column=0)
         self.lbl3.grid(row=3, column=0)
+
+        self.sub_ent.focus()
+        self.sub_ent.bind("<Return>", lambda e: self.callback())
+        
         sub_win.mainloop()
 
     def callback(self):
@@ -61,6 +65,7 @@ class Subtraction():
             self.exercise_str = str(self.ran_term1)+"*"+str(self.ran_term2)
             self.lbl1.configure(text="Assignment: "+self.exercise_str)
             self.sub_ent.delete(0, 'end')
+            self.sub_ent.focus()
         except ValueError:
             print("Please enter an integer")
 

@@ -62,6 +62,8 @@ class MainWindow(tk.Tk):
 
         ##Creating hightscore list DB##
         self.highscore_create()
+
+        self.name_entry.focus()
             
 
         

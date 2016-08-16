@@ -30,6 +30,10 @@ class Division():
         self.div_btn.grid(row=1, column=1)
         self.lbl2.grid(row=2, column=0)
         self.lbl3.grid(row=3, column=0)
+
+        self.div_ent.focus()
+        self.div_ent.bind("<Return>", lambda e: self.callback())
+        
         div_win.mainloop()
 
     ##Takes entry from user and compare to correct answear, then displayes new assignment##
@@ -64,6 +68,7 @@ class Division():
             self.exercise_str = str(self.ran_term1)+"/"+str(self.ran_term2)
             self.lbl1.configure(text="Assignment: "+self.exercise_str)
             self.div_ent.delete(0, 'end')
+            self.div_ent.focus()
         except ValueError:
             print("Please use atleast one and maximum two decimals(,)")
             
