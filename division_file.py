@@ -33,13 +33,14 @@ class Division():
     def callback(self):
         try:
             entry_str = str(self.div_ent.get())
-            entry_int = int(entry_str)
-            exercise_result = self.ran_term1/self.ran_term2
+            entry_int = float(entry_str)
+            exercise_result = int((self.ran_term1/self.ran_term2 * 100) + 0.5) / 100.0 #returns 2 decimals
             if entry_int == exercise_result:
                 self.lbl2.configure(text="Correct!")
                 self.points += 1
-            else:
                 self.add_to_highscore()
+            else:
+                
                 self.lbl2.configure(text="Incorrect, answer is " + str(exercise_result))
                 self.points = 0
             self.lbl3.configure(text="Points: "+str(self.points))
