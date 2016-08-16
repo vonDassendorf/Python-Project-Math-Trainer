@@ -70,8 +70,10 @@ class Multiplication():
             print("Please enter an integer")
 
     def add_to_highscore(self):
-        self.highscore_dict = {}
-        self.highscore_list_file = open("highscore_multiplication.txt", "w")
-        self.highscore_dict[self.username] = self.points
-        self.highscore_list_file.write(str(self.highscore_dict)+"\n")
-        self.highscore_list_file.close()
+        highscore_conn = sqlite3.connect("highscore.db")
+        highscore_curs = highscore_conn.cursor()
+        highscore_curs.execute("SELECT * FROM multiplication_highscore ORDER BY score ASC")
+        highscore_curs.execute("INSERT OR REPLACE INTO multiplication_highscore (username, score) VALUES (?,?)", self.username, self.points)
+        highscore_conn.commit()
+        highscore_curs.close()
+        highscore_conn.close()
