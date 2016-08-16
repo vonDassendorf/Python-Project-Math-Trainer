@@ -88,6 +88,7 @@ class MainWindow(tk.Tk):
         highscore_curs.close()
         highscore_conn.close()
 
+##Code for start page structure##
 class StartPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
@@ -107,14 +108,13 @@ class HighscoreList():
         self.create_highscore_list(exercise)
 
     def create_highscore_list(self, exercise):
+        hs_win = tk.Tk()
+        hs_win.title(exercise+" highscore")
+        hs_index = 1
         for row in self.data:
-            list_to_display.append(row)
-            print(self.list_to_display)
-            self.highscore_window(exercise)
-
-    def highscore_window(self, exercise):
-        div_win = tk.Tk()
-        div_win.title(exercise)
+            self.list_to_display.append(row)
+            lbl = tk.Label(hs_win, text=str(hs_index)+str(row))
+            lbl.grid(row=hs_index, column=1)
         canvas = tk.Canvas()
         
 
