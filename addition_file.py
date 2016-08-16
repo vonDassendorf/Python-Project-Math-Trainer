@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 import random
+import sqlite3
 
 
 class Addition():
@@ -42,8 +43,8 @@ class Addition():
             if entry_int == exercise_result:
                 self.lbl2.configure(text="Correct!")
                 self.points += 1
-            else:
                 self.add_to_highscore()
+            else:
                 self.lbl2.configure(text="Incorrect, answer is " + str(exercise_result))
                 self.points = 0
             self.lbl3.configure(text="Points: "+str(self.points))
@@ -72,8 +73,9 @@ class Addition():
     def add_to_highscore(self):
         highscore_conn = sqlite3.connect("highscore.db")
         highscore_curs = highscore_conn.cursor()
+        entry = (self.username, self.points)
         highscore_curs.execute("SELECT * FROM addition_highscore ORDER BY score ASC")
-        highscore_curs.execute("INSERT OR REPLACE INTO addition_highscore (username, score) VALUES (?,?)", self.username, self.points)
+        highscore_curs.execute("INSERT OR REPLACE INTO addition_highscore (username, score) VALUES (?,?)", entry)
         highscore_conn.commit()
         highscore_curs.close()
         highscore_conn.close()
