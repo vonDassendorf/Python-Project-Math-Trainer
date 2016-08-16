@@ -1,21 +1,23 @@
 import tkinter as tk
 from tkinter import ttk
 import random
+import sqlite3
 
 
 class Division():
 
     def __init__(self, username):
-        self.ran_term1 = random.randint(0,10)      
-        self.ran_term2  = random.randint(0,10)
+        self.ran_term1 = random.randint(1,10)      
+        self.ran_term2  = random.randint(1,10)
         self.exercise_str = str(self.ran_term1)+'/'+str(self.ran_term2)
         self.points = 0
         self.username = username
         self.division_window()
 
+    ##Creates the new window##
     def division_window(self):
         div_win = tk.Tk()
-        div_win.title("Addition")
+        div_win.title("Division")
         canvas = tk.Canvas()
         self.lbl1 = ttk.Label(div_win, text="Assignment: "+self.exercise_str)
         self.div_ent = ttk.Entry(div_win, width=5)
@@ -30,6 +32,7 @@ class Division():
         self.lbl3.grid(row=3, column=0)
         div_win.mainloop()
 
+    ##Takes entry from user and compare to correct answear, then displayes new assignment##
     def callback(self):
         try:
             entry_str = str(self.div_ent.get())
@@ -62,12 +65,27 @@ class Division():
             self.lbl1.configure(text="Assignment: "+self.exercise_str)
             self.div_ent.delete(0, 'end')
         except ValueError:
-            print("Please enter an integer")
-
+            print("Please use atleast one and maximum two decimals(,)")
+            
+    ##Adds user perfomance to highscore list##
     def add_to_highscore(self):
-        self.highscore_dict = {}
-        self.highscore_list_file = open("highscore_division.txt", "w")
-        self.highscore_dict[self.username] = self.points
-        self.highscore_list_file.write(str(self.highscore_dict)+"\n")
-        self.highscore_list_file.close()
-        
+        highscore_conn = sqlite3.connect("highscore.db")
+        highscore_curs = highscore_conn.cursor()
+        #highscore_curs.execute("CREATE TABLE IF NOT EXISTS highscore(username TEXT, score REAL")
+        highscore_curs.execute("SELECT * FROM division_highscore ORDER BY score DESC LIMIT 10")
+        if self.username in highscore_curs.fetchall():
+            for row in highscore_curs.fetchall():
+                if row[1] == self.username:
+                    if row[2] > self.points:
+                        highscore_curs.execute("UPDATE division_highscore SET score = ? WHERE username == ?",
+                                               (self.points, self.username))
+        elif len(highscore_curs.fetchall()) == 10:
+            highscore_curs.execute("DELETE FROM division_highscore WHERE username == (SELECT MIN(score) FROM division_highscore)")
+            highscore_curs.execute("INSERT INTO division_highscore (username, score) VALUES (?,?)",
+                                   (self.username, self.points))
+        else:
+            highscore_curs.execute("INSERT INTO division_highscore (username, score) VALUES (?,?)",
+                                   (self.username, self.points))
+        highscore_conn.commit()
+        highscore_curs.close()
+        highscore_conn.close()

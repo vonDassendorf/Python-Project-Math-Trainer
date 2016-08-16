@@ -1,13 +1,14 @@
 import tkinter as tk
 from tkinter import ttk
-import multiplication_file as mul_py
+import sqlite3
 import addition_file as add_py
 import subtraction_file as sub_py
+import multiplication_file as mul_py
 import division_file as div_py
 
 
 LARGE_FONT = ("Verdana", 12)
-##Base code for main window and to show the desired page##
+##Base code for main window and calling to exercises##
 class MainWindow(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
@@ -42,11 +43,15 @@ class MainWindow(tk.Tk):
         filemenu.add_command(labe="Exit", command=quit)
         menubar.add_cascade(label="File", menu=filemenu)
 
-        tk.Tk.config(self, menu=menubar)        
+        tk.Tk.config(self, menu=menubar)
         
+        ##Displaying startpage##
         frame = StartPage(container, self)
         self.frames[StartPage] = frame
         frame.grid(row=0, column=0, sticky="nsew")
+
+        ##Creating hightscore list DB##
+        self.highscore_create()
             
 
         
@@ -61,7 +66,17 @@ class MainWindow(tk.Tk):
         elif exercise == "div":
             div_py.Division(self.username)
 
-
+    ##Creating highscore files if not present##
+    def highscore_create(self):
+        highscore_conn = sqlite3.connect("highscore.db")
+        highscore_curs = highscore_conn.cursor()
+        highscore_curs.execute("CREATE TABLE IF NOT EXISTS addition_highscore(username TEXT, score INTEGER)")
+        highscore_curs.execute("CREATE TABLE IF NOT EXISTS subtraction_highscore(username TEXT, score INTEGER)")
+        highscore_curs.execute("CREATE TABLE IF NOT EXISTS multiplication_highscore(username TEXT, score INTEGER)")
+        highscore_curs.execute("CREATE TABLE IF NOT EXISTS division_highscore(username TEXT, score INTEGER)")
+        highscore_conn.commit
+        highscore_curs.close()
+        highscore_conn.close()
 
 class StartPage(tk.Frame):
     def __init__(self, parent, controller):
@@ -74,8 +89,7 @@ class StartPage(tk.Frame):
 
 class HighscoreList():
     def __init__(self, exercise):
-        ##Creating and loading the Highscore list##
-        self.highscore_list_file = open("highscore.txt", "r")
+        pass
 
 app = MainWindow()
 app.mainloop()
