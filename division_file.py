@@ -40,7 +40,6 @@ class Division():
                 self.points += 1
                 self.add_to_highscore()
             else:
-                
                 self.lbl2.configure(text="Incorrect, answer is " + str(exercise_result))
                 self.points = 0
             self.lbl3.configure(text="Points: "+str(self.points))
