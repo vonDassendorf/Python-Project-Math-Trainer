@@ -71,21 +71,8 @@ class Division():
     def add_to_highscore(self):
         highscore_conn = sqlite3.connect("highscore.db")
         highscore_curs = highscore_conn.cursor()
-        #highscore_curs.execute("CREATE TABLE IF NOT EXISTS highscore(username TEXT, score REAL")
-        highscore_curs.execute("SELECT * FROM division_highscore ORDER BY score DESC LIMIT 10")
-        if self.username in highscore_curs.fetchall():
-            for row in highscore_curs.fetchall():
-                if row[1] == self.username:
-                    if row[2] > self.points:
-                        highscore_curs.execute("UPDATE division_highscore SET score = ? WHERE username == ?",
-                                               (self.points, self.username))
-        elif len(highscore_curs.fetchall()) == 10:
-            highscore_curs.execute("DELETE FROM division_highscore WHERE username == (SELECT MIN(score) FROM division_highscore)")
-            highscore_curs.execute("INSERT INTO division_highscore (username, score) VALUES (?,?)",
-                                   (self.username, self.points))
-        else:
-            highscore_curs.execute("INSERT INTO division_highscore (username, score) VALUES (?,?)",
-                                   (self.username, self.points))
+        highscore_curs.execute("SELECT * FROM division_highscore ORDER BY score ASC")
+        highscore_curs.execute("INSERT OR REPLACE INTO division_highscore (username, score) VALUES (?,?)", self.username, self.points))
         highscore_conn.commit()
         highscore_curs.close()
         highscore_conn.close()
