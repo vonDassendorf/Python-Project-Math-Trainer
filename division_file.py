@@ -72,7 +72,7 @@ class Division():
         highscore_conn = sqlite3.connect("highscore.db")
         highscore_curs = highscore_conn.cursor()
         highscore_curs.execute("SELECT * FROM division_highscore ORDER BY score ASC")
-        highscore_curs.execute("INSERT OR REPLACE INTO division_highscore (username, score) VALUES (?,?)", self.username, self.points))
+        highscore_curs.execute("INSERT OR REPLACE INTO division_highscore (username, score) VALUES (?,?)", self.username, self.points)
         highscore_conn.commit()
         highscore_curs.close()
         highscore_conn.close()

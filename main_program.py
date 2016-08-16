@@ -42,6 +42,16 @@ class MainWindow(tk.Tk):
         filemenu.add_separator()
         filemenu.add_command(labe="Exit", command=quit)
         menubar.add_cascade(label="File", menu=filemenu)
+        highscore_menu = tk.Menu(menubar, tearoff=0)
+        highscore_menu.add_command(label="Addition",
+                             command=lambda: HighscoreList("addition_highscore"))
+        highscore_menu.add_command(label="Subtraction",
+                             command=lambda: HighscoreList("subtraction_highscore"))
+        highscore_menu.add_command(label="Multiplication",
+                             command=lambda: HighscoreList("multiplication_highscore"))
+        highscore_menu.add_command(label="Division",
+                             command=lambda: HighscoreList("division_highscore"))
+        menubar.add_cascade(labe="Highscore", menu=highscore_menu)
 
         tk.Tk.config(self, menu=menubar)
         
@@ -86,10 +96,27 @@ class StartPage(tk.Frame):
                           font=LARGE_FONT)
         label.pack(pady=10, padx=10)
 
-
+##Presenting the highscore list##
 class HighscoreList():
     def __init__(self, exercise):
-        pass
+        hs_conn = sqlite3.connect("highscore.db")
+        hs_curs = hs_conn.cursor()
+        hs_curs.execute("SELECT * FROM "+exercise+" ORDER BY score DESC LIMIT 10")
+        self.data = hs_curs.fetchall()
+        self.list_to_display = []
+        self.create_highscore_list(exercise)
+
+    def create_highscore_list(self, exercise):
+        for row in self.data:
+            list_to_display.append(row)
+            print(self.list_to_display)
+            self.highscore_window(exercise)
+
+    def highscore_window(self, exercise):
+        div_win = tk.Tk()
+        div_win.title(exercise)
+        canvas = tk.Canvas()
+        
 
 app = MainWindow()
 app.mainloop()
