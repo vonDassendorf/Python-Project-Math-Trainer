@@ -14,29 +14,29 @@ class Multiplication():
         self.multiplication_window()
 
     def multiplication_window(self):
-        div_win = tk.Tk()
-        div_win.title("multiplication")
+        mul_win = tk.Tk()
+        mul_win.title("multiplication")
         canvas = tk.Canvas()
-        self.lbl1 = ttk.Label(div_win, text="Assignment: "+self.exercise_str)
-        self.div_ent = ttk.Entry(div_win, width=5)
-        self.div_btn = ttk.Button(div_win, text="Check Answer", command=self.callback)
-        self.lbl2 = ttk.Label(div_win, text="")
-        self.lbl3 = ttk.Label(div_win, text="Points: "+str(self.points))
+        self.lbl1 = ttk.Label(mul_win, text="Assignment: "+self.exercise_str)
+        self.mul_ent = ttk.Entry(mul_win, width=5)
+        self.mul_btn = ttk.Button(mul_win, text="Check Answer", command=self.callback)
+        self.lbl2 = ttk.Label(mul_win, text="")
+        self.lbl3 = ttk.Label(mul_win, text="Points: "+str(self.points))
 
         self.lbl1.grid(row=0, column=0)
-        self.div_ent.grid(row=0, column=1)
-        self.div_btn.grid(row=1, column=1)
+        self.mul_ent.grid(row=0, column=1)
+        self.mul_btn.grid(row=1, column=1)
         self.lbl2.grid(row=2, column=0)
         self.lbl3.grid(row=3, column=0)
 
         self.mul_ent.focus()
         self.mul_ent.bind("<Return>", lambda e: self.callback())
         
-        div_win.mainloop()
+        mul_win.mainloop()
 
     def callback(self):
         try:
-            entry_str = str(self.div_ent.get())
+            entry_str = str(self.mul_ent.get())
             entry_int = int(entry_str)
             exercise_result = self.ran_term1*self.ran_term2
             if entry_int == exercise_result:
@@ -64,7 +64,7 @@ class Multiplication():
                 self.ran_term2 = random.randint(1,100)
             self.exercise_str = str(self.ran_term1)+"*"+str(self.ran_term2)
             self.lbl1.configure(text="Assignment: "+self.exercise_str)
-            self.div_ent.delete(0, 'end')
+            self.mul_ent.delete(0, 'end')
             self.mul_ent.focus()
         except ValueError:
             self.lbl2.config(text="Please enter an integer")
