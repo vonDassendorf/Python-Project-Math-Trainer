@@ -62,18 +62,19 @@ class Subtraction():
             elif self.points > 100:
                 self.ran_term1 = random.randint(1,1000)
                 self.ran_term2 = random.randint(1,1000)
-            self.exercise_str = str(self.ran_term1)+"*"+str(self.ran_term2)
+            self.exercise_str = str(self.ran_term1)+"-"+str(self.ran_term2)
             self.lbl1.configure(text="Assignment: "+self.exercise_str)
             self.sub_ent.delete(0, 'end')
             self.sub_ent.focus()
         except ValueError:
-            print("Please enter an integer")
+            self.lbl2.config(text="Please enter an integer")
 
     def add_to_highscore(self):
         highscore_conn = sqlite3.connect("highscore.db")
         highscore_curs = highscore_conn.cursor()
+        entry = (self.username, self.points)
         highscore_curs.execute("SELECT * FROM subtraction_highscore ORDER BY score ASC")
-        highscore_curs.execute("INSERT OR REPLACE INTO subtraction_highscore (username, score) VALUES (?,?)", self.username, self.points)
+        highscore_curs.execute("INSERT OR REPLACE INTO subtraction_highscore (username, score) VALUES (?,?)", entry)
         highscore_conn.commit()
         highscore_curs.close()
         highscore_conn.close()

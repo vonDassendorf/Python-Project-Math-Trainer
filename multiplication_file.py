@@ -67,13 +67,14 @@ class Multiplication():
             self.div_ent.delete(0, 'end')
             self.mul_ent.focus()
         except ValueError:
-            print("Please enter an integer")
+            self.lbl2.config(text="Please enter an integer")
 
     def add_to_highscore(self):
         highscore_conn = sqlite3.connect("highscore.db")
         highscore_curs = highscore_conn.cursor()
+        entry = (self.username, self.points)
         highscore_curs.execute("SELECT * FROM multiplication_highscore ORDER BY score ASC")
-        highscore_curs.execute("INSERT OR REPLACE INTO multiplication_highscore (username, score) VALUES (?,?)", self.username, self.points)
+        highscore_curs.execute("INSERT OR REPLACE INTO multiplication_highscore (username, score) VALUES (?,?)", entry)
         highscore_conn.commit()
         highscore_curs.close()
         highscore_conn.close()

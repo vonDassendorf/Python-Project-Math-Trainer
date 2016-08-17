@@ -68,7 +68,7 @@ class Addition():
             self.add_ent.delete(0, 'end')
             self.add_ent.focus()
         except ValueError:
-            print("Please enter an integer")
+            self.lbl2.config(text="Please enter an integer")
 
     def add_to_highscore(self):
         highscore_conn = sqlite3.connect("highscore.db")

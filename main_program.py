@@ -13,7 +13,7 @@ class MainWindow(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
 
-        #tk.Tk.iconbitmap(self, default="nånting.ico")
+        tk.Tk.iconbitmap(self, default="mathtrainer.ico")
         tk.Tk.wm_title(self, "Math trainer")
         
         container = tk.Frame(self)
@@ -83,10 +83,10 @@ class MainWindow(tk.Tk):
     def highscore_create(self):
         highscore_conn = sqlite3.connect("highscore.db")
         highscore_curs = highscore_conn.cursor()
-        highscore_curs.execute("CREATE TABLE IF NOT EXISTS addition_highscore(username TEXT, score INTEGER)")
-        highscore_curs.execute("CREATE TABLE IF NOT EXISTS subtraction_highscore(username TEXT, score INTEGER)")
-        highscore_curs.execute("CREATE TABLE IF NOT EXISTS multiplication_highscore(username TEXT, score INTEGER)")
-        highscore_curs.execute("CREATE TABLE IF NOT EXISTS division_highscore(username TEXT, score INTEGER)")
+        highscore_curs.execute("CREATE TABLE IF NOT EXISTS addition_highscore(username TEXT UNIQUE, score INTEGER)")
+        highscore_curs.execute("CREATE TABLE IF NOT EXISTS subtraction_highscore(username TEXT UNIQUE, score INTEGER)")
+        highscore_curs.execute("CREATE TABLE IF NOT EXISTS multiplication_highscore(username TEXT UNIQUE, score INTEGER)")
+        highscore_curs.execute("CREATE TABLE IF NOT EXISTS division_highscore(username TEXT UNIQUE, score INTEGER)")
         highscore_conn.commit
         highscore_curs.close()
         highscore_conn.close()

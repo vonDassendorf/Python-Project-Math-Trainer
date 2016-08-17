@@ -70,14 +70,15 @@ class Division():
             self.div_ent.delete(0, 'end')
             self.div_ent.focus()
         except ValueError:
-            print("Please use atleast one and maximum two decimals(,)")
+            self.lbl2.config(text="Please enter a float with a maximum of 2 decimals")
             
     ##Adds user perfomance to highscore list##
     def add_to_highscore(self):
         highscore_conn = sqlite3.connect("highscore.db")
         highscore_curs = highscore_conn.cursor()
+        entry = (self.username, self.points)
         highscore_curs.execute("SELECT * FROM division_highscore ORDER BY score ASC")
-        highscore_curs.execute("INSERT OR REPLACE INTO division_highscore (username, score) VALUES (?,?)", self.username, self.points)
+        highscore_curs.execute("INSERT OR REPLACE INTO division_highscore (username, score) VALUES (?,?)", entry)
         highscore_conn.commit()
         highscore_curs.close()
         highscore_conn.close()
